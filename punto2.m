@@ -389,6 +389,7 @@ vector_graficar = 1:1:patrones;
 errormaximo = str2double(get(handles.error,'String'));
 nc1 = str2double(get(handles.edit1,'String')); 
 nc2 = str2double(get(handles.edit2,'String'));
+nc3 = str2double(get(handles.edit3,'String'));
 iteraciones = str2double(get(handles.iteraciones,'String'));
 rata = str2double(get(handles.rata,'String'));
 historial_rms = zeros(1,iteraciones);
@@ -537,6 +538,12 @@ switch get(handles.popupmenu1,'Value')
                  plot(x,y,'g')
                  hold off
                 %------------------grafico--------------------
+                %------------------guardo pesos----------------------------       
+                 writematrix(w,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_1.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_1.txt
+                 writematrix(w2,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_salida.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_salida.txt
+                %------------------guardo pesos----------------------------
                break;
            else
                if (iteracion == iteraciones)
@@ -737,6 +744,14 @@ switch get(handles.popupmenu1,'Value')
                    plot(x,y,'g')
                    hold off
                  %------------------grafico--------------------
+                 %------------------guardo pesos----------------------------
+                 writematrix(w,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_1.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_1.txt
+                 writematrix(w2,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_2.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_2.txt
+                 writematrix(w3,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_salida.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_salida.txt
+                %------------------guardo pesos----------------------------
                break;
            else
               if (iteracion == iteraciones)
@@ -758,7 +773,216 @@ switch get(handles.popupmenu1,'Value')
        end
        
     case 3
-         
+       %inicializo pesos y umbrales capa de entrada a capa1      
+       w  =  -1 + (1--1).*rand(nc1,entradas);
+       u  = -1 + (1--1).*rand(1,nc1);
+       salidas = zeros(1,nc1);
+       
+       %inicializo pesos y umbrales  de capa 1 a capa2   
+       w2  =  -1 + (1--1).*rand(nc2,nc1);
+       u2  = 0 + (0--1).*rand(1,nc2);   
+       salidas2 = zeros(1,nc2);
+       
+       [filas columnas] = size(salidas2);
+       %inicializo pesos y umbrales  de capa1 a salida   
+       w3 = -1 + (1--1).*rand(Salidas,columnas);
+       u3 =  0 + (0--1).*rand(1,Salidas);
+       salidas3 = zeros(1,Salidas); 
+       
+       iteracion = 1;
+       RMS = 0;
+       while(iteracion <= iteraciones)
+           cla
+           ETP = 0;
+           for i = 1:patrones
+               disp(['patron----------------------', i]);     
+               %calcular las salidas de capa de entrada y 1 capa oculta
+               disp('resultados de la capa de entrada a capa oculta 1');
+               for j = 1:nc1
+                    sumatoria = 0;
+                    for k = 1:entradas
+                         sumatoria = sumatoria + (E(i,k)*w(j,k));
+                    end
+                    sumatoria = sumatoria-u(1,j);
+                    %verifico cual funcion escogio el usuario
+                    switch get(handles.popupmenu2,'Value')   
+                        case 1
+                            salidas(1,j) = 1/(1+exp(-sumatoria));
+                        case 2
+                            salidas(1,j) = tanh(sumatoria);   
+                        case 3
+                            salidas(1,j) = sin(sumatoria);
+                    end
+               end
+               disp('salidas de la capa 1')
+               disp(salidas)
+               
+               %calcular las salidas de capa oculta 1 y 2 capa oculta
+               for j = 1:nc2
+                    sumatoria = 0;
+                    for k = 1:nc1
+                         sumatoria = sumatoria + (E(i,k)*w2(j,k));
+                    end
+                    sumatoria = sumatoria-u2(1,j);
+                    %verifico cual funcion escogio el usuario
+                    switch get(handles.popupmenu3,'Value')   
+                        case 1
+                            salidas2(1,j) = 1/(1+exp(-sumatoria));
+                        case 2
+                            salidas2(1,j) = tanh(sumatoria);   
+                        case 3
+                            salidas2(1,j) = sin(sumatoria);
+                    end
+               end
+               disp('salidas de la capa 2')
+               disp(salidas2)
+               
+               %calcular salidas de la capa 2 a la capa de salida
+               sumatoria = 0;
+               for j = 1:nc2
+                   sumatoria = sumatoria + (salidas2(1,j)*w3(1,j));
+               end
+               sumatoria=sumatoria-u3(1,1);
+               
+               %verifico funcion de activacion para las salidas
+               switch get(handles.popupmenu5,'Value')   
+                   case 1 
+                          salidas3(1,1) = sumatoria;
+                   case 2
+                          salidas3(1,1) = 1/(1+exp(-sumatoria));
+                   case 3
+                          salidas3(1,1) = tanh(sumatoria);   
+                   case 4
+                          salidas3(1,1) = sin(sumatoria);
+               end    
+               disp('salidas finales');
+               disp(salidas3);
+               
+               %calcular valor error lineal y error del patron
+               yr =  salidas3(1,1);
+               Elineal = S(i,1)-yr;
+               Ep = abs(Elineal) / 1;
+               disp('error de patron')
+               disp(Ep)
+               vector_graficar(1,i) = Ep;
+               
+               %actualizacion pesos de la capa de entrada  a  capa 1
+               disp('w')
+               disp(w)
+               for k = 1:nc1
+                 for l = 1:entradas
+                     w(k,l) = w(k,l)+rata*Ep*E(i,l);
+                 end
+               end
+               disp('w modificado')
+               disp(w)
+               
+               %actualizacion pesos de la capa 1 a capa 2
+               disp('w2')
+               disp(w2)  
+               for k = 1:nc2
+                   for l = 1:nc1
+                        w2(k,l) = w2(k,l)+rata*Ep*salidas(1,l);
+                   end
+               end      
+               disp('w2 modificado')
+               disp(w2)
+               
+               %actualizacion pesos entre la capa 2 y la capa de salida
+               disp('w3')
+               disp(w3)
+               for k = 1:Salidas
+                for l = 1:nc2
+                     w3(k,l) = w3(k,l)+rata*Elineal*salidas2(k,l);
+                end
+               end
+               disp('w3 modificado')
+               disp(w3)
+                
+               %actualizacionde umbrales de capa de entrada a capa oculta 1
+                disp('u')
+                disp(u)
+                for k = 1:nc1
+                     u(1,k) = u(1,k)+rata*Ep*1;
+                end
+                disp('u modificado')
+                disp(u)
+                
+                %actualizacionde umbrales de capa oculta 1 a capa oculta 2
+                disp('u2')
+                disp(u2)
+                for k = 1:nc2
+                     u2(1,k) = u2(1,k)+rata*Ep*1;
+                end
+                disp('u2 modificado')
+                disp(u2)
+                
+                %actualizacionde umbrales de capa oculta 2 a capa de salida
+                disp('u3')
+                disp(u3)
+                for k = 1:Salidas
+                     u3(1,k) = u3(1,k)+rata*Elineal*1;
+                end
+                disp('u3 modificado')
+                disp(u3)
+                ETP = ETP + Ep;
+           end
+           disp('------------------------------------------------------------------');        
+           %------------------GRAFICAR--------------------
+           x = 1:1:patrones;
+           y = vector_graficar;   
+           hold on
+           plot(x,y,'g')
+           axes(handles.grafica)
+           hold off
+           RMS = ETP/patrones;
+           set(handles.ERROR_RMS,'String',RMS)
+           set(handles.NUMERO_I,'String',iteracion)
+           historial_rms(1,iteracion) = RMS;
+           %------------------GRAFICAR--------------------
+           if RMS <= errormaximo
+               disp('terminado por error maximo mayor')
+               disp('error RMS')
+               disp(RMS);
+               msgbox('Error RMS menor a error  maximo permitido', 'Atencion','warn');
+               historial
+                %------------------grafico--------------------
+                   x = 1:1:iteraciones;
+                   y = historial_rms;   
+                   hold on
+                   plot(x,y,'g')
+                   hold off
+                 %------------------grafico--------------------
+                  %------------------guardo pesos----------------------------
+                
+                 writematrix(w,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_1.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_1.txt
+                 writematrix(w2,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_2.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_2.txt
+                 writematrix(w2,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_3.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_3.txt
+                 writematrix(w3,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_salida.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_salida.txt
+                %------------------guardo pesos----------------------------
+               break;
+           else
+              if (iteracion == iteraciones)
+                   msgbox('Atenciòn: Se ha llegado al numero maximo de iteraciones y aun no se ha encontrado soluciòn, si desea continuar ingrese las iteraciones que que desea y de click entrenar', 'Error','error');
+                   historial
+                   %------------------grafico--------------------
+                   x = 1:1:iteraciones;
+                   y = historial_rms;   
+                   hold on
+                   plot(x,y,'g')
+                   hold off
+                 %------------------grafico--------------------
+              end
+                   iteracion = iteracion + 1;  
+                   disp('hago otra iteracion')
+                   disp('error RMS')
+                   disp(RMS);  
+           end
+       end
  end
 
 

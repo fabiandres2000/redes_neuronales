@@ -723,6 +723,10 @@ switch get(handles.popupmenu1,'Value')
                
                %calcular valor error lineal y error del patron
                yr =  salidas3(1,1);
+               disp('yd')
+               disp(S(i,1))
+               disp('yr')
+               disp(yr)
                Elineal = S(i,1)-yr;
                Ep = abs(Elineal) / 1;
                disp('error de patron')
@@ -862,11 +866,16 @@ switch get(handles.popupmenu1,'Value')
        u2  = 0 + (0--1).*rand(1,nc2);   
        salidas2 = zeros(1,nc2);
        
-       [filas columnas] = size(salidas2);
+       %inicializo pesos y umbrales  de capa 1 a capa3   
+       w3  =  -1 + (1--1).*rand(nc3,nc2);
+       u3  = 0 + (0--1).*rand(1,nc3);   
+       salidas3 = zeros(1,nc3);
+     
+       
        %inicializo pesos y umbrales  de capa1 a salida   
-       w3 = -1 + (1--1).*rand(Salidas,columnas);
-       u3 =  0 + (0--1).*rand(1,Salidas);
-       salidas3 = zeros(1,Salidas); 
+       w4 = -1 + (1--1).*rand(Salidas,nc3);
+       u4 =  0 + (0--1).*rand(1,Salidas);
+       salidas4 = zeros(1,Salidas); 
        
        iteracion = 1;
        RMS = 0;
@@ -916,29 +925,54 @@ switch get(handles.popupmenu1,'Value')
                disp('salidas de la capa 2')
                disp(salidas2)
                
-               %calcular salidas de la capa 2 a la capa de salida
-               sumatoria = 0;
-               for j = 1:nc2
-                   sumatoria = sumatoria + (salidas2(1,j)*w3(1,j));
+                %calcular las salidas de capa oculta 2 y 3 capa oculta
+               for j = 1:nc3
+                    sumatoria = 0;
+                    for k = 1:nc2
+                         sumatoria = sumatoria + (salidas2(1,k)*w3(j,k));
+                    end
+                    sumatoria = sumatoria-u3(1,j);
+                    %verifico cual funcion escogio el usuario
+                    switch get(handles.popupmenu4,'Value')   
+                        case 1
+                            salidas3(1,j) = 1/(1+exp(-sumatoria));
+                        case 2
+                            salidas3(1,j) = tanh(sumatoria);   
+                        case 3
+                            salidas3(1,j) = sin(sumatoria);
+                    end
                end
-               sumatoria=sumatoria-u3(1,1);
+               disp('salidas de la capa 3')
+               disp(salidas3)
+               
+               %calcular salidas de la capa 3 a la capa de salida
+               sumatoria = 0;
+            
+               for j = 1:nc3
+                   sumatoria = sumatoria + (salidas3(1,j)*w4(1,j));
+               end
+               sumatoria=sumatoria-u4(1,1);
                
                %verifico funcion de activacion para las salidas
                switch get(handles.popupmenu5,'Value')   
                    case 1 
-                          salidas3(1,1) = sumatoria;
+                          salidas4(1,1) = sumatoria;
                    case 2
-                          salidas3(1,1) = 1/(1+exp(-sumatoria));
+                          salidas4(1,1) = 1/(1+exp(-sumatoria));
                    case 3
-                          salidas3(1,1) = tanh(sumatoria);   
+                          salidas4(1,1) = tanh(sumatoria);   
                    case 4
-                          salidas3(1,1) = sin(sumatoria);
+                          salidas4(1,1) = sin(sumatoria);
                end    
                disp('salidas finales');
-               disp(salidas3);
+               disp(salidas4);
                
                %calcular valor error lineal y error del patron
-               yr =  salidas3(1,1);
+               yr =  salidas4(1,1);
+               disp('yd')
+               disp(S(i,1))
+               disp('yr')
+               disp(yr)
                Elineal = S(i,1)-yr;
                Ep = abs(Elineal) / 1;
                disp('error de patron')
@@ -967,16 +1001,28 @@ switch get(handles.popupmenu1,'Value')
                disp('w2 modificado')
                disp(w2)
                
-               %actualizacion pesos entre la capa 2 y la capa de salida
+               %actualizacion pesos entre la capa 2 y la capa 3
+               
                disp('w3')
-               disp(w3)
-               for k = 1:Salidas
-                for l = 1:nc2
-                     w3(k,l) = w3(k,l)+rata*Elineal*salidas2(k,l);
-                end
-               end
+               disp(w3)  
+               for k = 1:nc3
+                   for l = 1:nc2
+                        w3(k,l) = w3(k,l)+rata*Ep*salidas2(1,l);
+                   end
+               end      
                disp('w3 modificado')
                disp(w3)
+               
+               %actualizacion pesos entre la capa 3 y la capa salida
+               disp('w4')
+               disp(w4)
+               for k = 1:Salidas
+                for l = 1:nc3
+                     w4(k,l) = w4(k,l)+rata*Elineal*salidas3(k,l);
+                end
+               end
+               disp('w4 modificado')
+               disp(w4)
                 
                %actualizacionde umbrales de capa de entrada a capa oculta 1
                 disp('u')
@@ -996,14 +1042,23 @@ switch get(handles.popupmenu1,'Value')
                 disp('u2 modificado')
                 disp(u2)
                 
-                %actualizacionde umbrales de capa oculta 2 a capa de salida
+                %actualizacionde umbrales de capa oculta 2 a capa oculta 3
                 disp('u3')
                 disp(u3)
-                for k = 1:Salidas
-                     u3(1,k) = u3(1,k)+rata*Elineal*1;
+                for k = 1:nc3
+                     u3(1,k) = u3(1,k)+rata*Ep*1;
                 end
                 disp('u3 modificado')
                 disp(u3)
+                
+                %actualizacionde umbrales de capa oculta 2 a capa de salida
+                disp('u4')
+                disp(u4)
+                for k = 1:Salidas
+                     u4(1,k) = u4(1,k)+rata*Elineal*1;
+                end
+                disp('u4 modificado')
+                disp(u4)
                 ETP = ETP + Ep;
            end
            disp('------------------------------------------------------------------');        
@@ -1038,9 +1093,9 @@ switch get(handles.popupmenu1,'Value')
                  type C:\Users\fabia\Desktop\IA\elemento_punto_3\pesos_capa_1.txt
                  writematrix(w2,'C:\Users\fabia\Desktop\IA\elemento_punto_3\pesos_capa_2.txt','Delimiter',';');
                  type C:\Users\fabia\Desktop\IA\elemento_punto_3\pesos_capa_2.txt
-                 writematrix(w2,'C:\Users\fabia\Desktop\IA\elemento_punto_3\pesos_capa_3.txt','Delimiter',';');
+                 writematrix(w3,'C:\Users\fabia\Desktop\IA\elemento_punto_3\pesos_capa_3.txt','Delimiter',';');
                  type C:\Users\fabia\Desktop\IA\elemento_punto_3\pesos_capa_3.txt
-                 writematrix(w3,'C:\Users\fabia\Desktop\IA\elemento_punto_3\pesos_capa_salida.txt','Delimiter',';');
+                 writematrix(w4,'C:\Users\fabia\Desktop\IA\elemento_punto_3\pesos_capa_salida.txt','Delimiter',';');
                  type C:\Users\fabia\Desktop\IA\elemento_punto_3\pesos_capa_salida.txt
                  
                  
@@ -1048,9 +1103,9 @@ switch get(handles.popupmenu1,'Value')
                  type C:\Users\fabia\Desktop\IA\elemento_punto_3\umbrales_capa_1.txt
                  writematrix(u2,'C:\Users\fabia\Desktop\IA\elemento_punto_3\umbrales_capa_2.txt','Delimiter',';');
                  type C:\Users\fabia\Desktop\IA\elemento_punto_3\umbrales_capa_2.txt
-                 writematrix(u2,'C:\Users\fabia\Desktop\IA\elemento_punto_3\umbrales_capa_3.txt','Delimiter',';');
+                 writematrix(u3,'C:\Users\fabia\Desktop\IA\elemento_punto_3\umbrales_capa_3.txt','Delimiter',';');
                  type C:\Users\fabia\Desktop\IA\elemento_punto_3\umbrales_capa_3.txt 
-                 writematrix(u3,'C:\Users\fabia\Desktop\IA\elemento_punto_3\umbrales_capa_salida.txt','Delimiter',';');
+                 writematrix(u4,'C:\Users\fabia\Desktop\IA\elemento_punto_3\umbrales_capa_salida.txt','Delimiter',';');
                  type C:\Users\fabia\Desktop\IA\elemento_punto_3\umbrales_capa_salida.txt
                 %------------------guardo pesos----------------------------
                break;

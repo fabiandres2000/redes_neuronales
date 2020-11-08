@@ -1,35 +1,35 @@
-function varargout = punto2(varargin)
-% PUNTO2 MATLAB code for punto2.fig
-%      PUNTO2, by itself, creates a new PUNTO2 or raises the existing
+function varargout = punto5(varargin)
+% PUNTO5 MATLAB code for punto5.fig
+%      PUNTO5, by itself, creates a new PUNTO5 or raises the existing
 %      singleton*.
 %
-%      H = PUNTO2 returns the handle to a new PUNTO2 or the handle to
+%      H = PUNTO5 returns the handle to a new PUNTO5 or the handle to
 %      the existing singleton*.
 %
-%      PUNTO2('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in PUNTO2.M with the given input arguments.
+%      PUNTO5('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in PUNTO5.M with the given input arguments.
 %
-%      PUNTO2('Property','Value',...) creates a new PUNTO2 or raises the
+%      PUNTO5('Property','Value',...) creates a new PUNTO5 or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before punto2_OpeningFcn gets called.  An
+%      applied to the GUI before punto5_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to punto2_OpeningFcn via varargin.
+%      stop.  All inputs are passed to punto5_OpeningFcn via varargin.
 %
 %      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help punto2
+% Edit the above text to modify the response to help punto5
 
-% Last Modified by GUIDE v2.5 04-Nov-2020 21:29:39
+% Last Modified by GUIDE v2.5 05-Nov-2020 22:30:50
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @punto2_OpeningFcn, ...
-                   'gui_OutputFcn',  @punto2_OutputFcn, ...
+                   'gui_OpeningFcn', @punto5_OpeningFcn, ...
+                   'gui_OutputFcn',  @punto5_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
@@ -44,26 +44,26 @@ end
 % End initialization code - DO NOT EDIT
 
 
-% --- Executes just before punto2 is made visible.
-function punto2_OpeningFcn(hObject, eventdata, handles, varargin)
+% --- Executes just before punto5 is made visible.
+function punto5_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to punto2 (see VARARGIN)
+% varargin   command line arguments to punto5 (see VARARGIN)
 
-% Choose default command line output for punto2
+% Choose default command line output for punto5
 handles.output = hObject;
 
 % Update handles structure
 guidata(hObject, handles);
 
-% UIWAIT makes punto2 wait for user response (see UIRESUME)
+% UIWAIT makes punto5 wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = punto2_OutputFcn(hObject, eventdata, handles) 
+function varargout = punto5_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -71,6 +71,141 @@ function varargout = punto2_OutputFcn(hObject, eventdata, handles)
 
 % Get default command line output from handles structure
 varargout{1} = handles.output;
+
+
+
+function NUMERO_I_Callback(hObject, eventdata, handles)
+% hObject    handle to NUMERO_I (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of NUMERO_I as text
+%        str2double(get(hObject,'String')) returns contents of NUMERO_I as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function NUMERO_I_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to NUMERO_I (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ERROR_RMS_Callback(hObject, eventdata, handles)
+% hObject    handle to ERROR_RMS (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ERROR_RMS as text
+%        str2double(get(hObject,'String')) returns contents of ERROR_RMS as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ERROR_RMS_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ERROR_RMS (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in pushbutton2.
+function pushbutton2_Callback(hObject, eventdata, handles)
+[file,path] = uigetfile('*.txt');
+if isequal(file,0)
+   disp('User selected Cancel');
+else
+   disp(['User selected ', fullfile(path,file)]);
+   name_file =  fullfile(path,file);
+   
+   opts = detectImportOptions(name_file);
+   opts.SelectedVariableNames = {'Var1','Var2','Var3'};
+   global  E S;
+   E = readmatrix(name_file,opts);
+   
+   opts = detectImportOptions(name_file);
+   opts.SelectedVariableNames = {'Var4','Var5'};
+   S =  readmatrix(name_file,opts);
+end
+
+
+
+function iteraciones_Callback(hObject, eventdata, handles)
+% hObject    handle to iteraciones (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of iteraciones as text
+%        str2double(get(hObject,'String')) returns contents of iteraciones as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function iteraciones_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to iteraciones (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function error_Callback(hObject, eventdata, handles)
+% hObject    handle to error (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of error as text
+%        str2double(get(hObject,'String')) returns contents of error as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function error_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to error (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function rata_Callback(hObject, eventdata, handles)
+% hObject    handle to rata (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of rata as text
+%        str2double(get(hObject,'String')) returns contents of rata as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function rata_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to rata (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
 
 
 % --- Executes on selection change in popupmenu1.
@@ -130,7 +265,6 @@ switch get(handles.popupmenu1,'Value')
         set(handles.popupmenu3,'Visible','on');
         set(handles.popupmenu4,'Visible','on');
 end
-
 
 % Hints: contents = cellstr(get(hObject,'String')) returns popupmenu1 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from popupmenu1
@@ -215,31 +349,6 @@ function edit3_CreateFcn(hObject, eventdata, handles)
 %       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
-end
-
-
-% --- Executes on button press in pushbutton2.
-function pushbutton2_Callback(hObject, eventdata, handles)
-[file,path] = uigetfile('*.txt');
-if isequal(file,0)
-   disp('User selected Cancel');
-else
-   disp(['User selected ', fullfile(path,file)]);
-   name_file =  fullfile(path,file);
-   
-   opts = detectImportOptions(name_file);
-   opts.SelectedVariableNames = {'Var1','Var2','Var3','Var4','Var5','Var6','Var7','Var8','Var9','Var10'};
-    global  E S;
-    E = readmatrix(name_file,opts);
-   
-    opts = detectImportOptions(name_file);
-    opts.SelectedVariableNames = {'Var11'};
-    S =  readmatrix(name_file,opts);
-   
-    disp('entradas:')
-    disp(E)
-    disp('salidas')
-    disp(S)
 end
 
 
@@ -335,57 +444,8 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-
-function iteraciones_Callback(hObject, eventdata, handles)
-% hObject    handle to iteraciones (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of iteraciones as text
-%        str2double(get(hObject,'String')) returns contents of iteraciones as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function iteraciones_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to iteraciones (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function error_Callback(hObject, eventdata, handles)
-% hObject    handle to error (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of error as text
-%        str2double(get(hObject,'String')) returns contents of error as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function error_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to error (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-% --- Executes on button press in pushbutton4.
-function pushbutton4_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton4 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+% --- Executes on button press in pushbutton1.
+function pushbutton1_Callback(hObject, eventdata, handles)
 global S E;
 [patrones entradas] = size(E);
 [Patrones Salidas] = size(S);
@@ -397,6 +457,7 @@ nc3 = str2double(get(handles.edit3,'String'));
 iteraciones = str2double(get(handles.iteraciones,'String'));
 rata = str2double(get(handles.rata,'String'));
 historial_rms = zeros(1,iteraciones);
+
 
 switch get(handles.popupmenu1,'Value')   
     case 1   
@@ -416,7 +477,7 @@ switch get(handles.popupmenu1,'Value')
        disp(w2);
        disp('u2');
        disp(u2); 
-       salidas2 = zeros(Salidas,1);    
+       salidas2 = zeros(1,Salidas);    
        
        
        iteracion = 1;
@@ -449,34 +510,42 @@ switch get(handles.popupmenu1,'Value')
                disp(salidas);
                
               %calcular salidas de la capa 1 a la capa de salida
-               sumatoria = 0;
-               for j = 1:nc1
-                   sumatoria = sumatoria + (salidas(1,j)*w2(1,j));
-               end
-               sumatoria=sumatoria-u2(1,1);
                
-               %verifico funcion de activacion para las salidas
-               switch get(handles.popupmenu5,'Value')   
+               for k = 1:Salidas
+                 sumatoria = 0;
+                 for j = 1:nc1
+                    sumatoria = sumatoria + (salidas(1,j)*w2(1,j));
+                 end
+                 sumatoria=sumatoria-u2(1,k);
+                 %verifico funcion de activacion para las salidas
+                 switch get(handles.popupmenu5,'Value')   
                    case 1 
-                          salidas2(1,1) = sumatoria;
+                          salidas2(1,k) = sumatoria;
                    case 2
-                          salidas2(1,1) = 1/(1+exp(-sumatoria));
+                          salidas2(1,k) = 1/(1+exp(-sumatoria));
                    case 3
-                          salidas2(1,1) = tan(sumatoria);   
+                          salidas2(1,k) = tanh(sumatoria);   
                    case 4
-                          salidas2(1,1) = sin(sumatoria);
-               end    
+                          salidas2(1,k) = sin(sumatoria);
+                 end  
+               end
                disp('salidas finales');
                disp(salidas2);
               
                %calcular valor error lineal y error del patron
-               yr =  salidas2(1,1);
-               disp('yd')
+               yr1 =  salidas2(1,1);
+               disp('yd1')
                disp(S(i,1))
-               disp('yr')
-               disp(yr)
-               Elineal = S(i,1)-yr;
-               Ep = abs(Elineal) / 1;
+               disp('yr1')
+               disp(yr1)
+               Elineal_1 = S(i,1)-yr1;
+               yr2 =  salidas2(1,2);
+               disp('yd2')
+               disp(S(i,2))
+               disp('yr2')
+               disp(yr2)
+               Elineal_2 = S(i,2)-yr2;
+               Ep = abs(Elineal_1+Elineal_2) / 2;
                disp('error de patron')
                disp(Ep)
                vector_graficar(1,i) = Ep;
@@ -497,7 +566,11 @@ switch get(handles.popupmenu1,'Value')
                disp(w2)
                for k = 1:Salidas
                 for l = 1:nc1
-                     w2(k,l) = w2(k,l)+rata*Elineal*salidas(k,l);
+                    if(k==1)
+                     w2(k,l) = w2(k,l)+rata*Elineal_1*salidas(1,l);
+                    else
+                     w2(k,l) = w2(k,l)+rata*Elineal_2*salidas(1,l);
+                    end
                 end
                end
                disp('w2 modificado')
@@ -512,12 +585,16 @@ switch get(handles.popupmenu1,'Value')
                %actualizacionde umbrales de capa oculta 1 a capa de salida
                
                 for k = 1:Salidas
-                     u2(1,k) = u2(1,k)+rata*Elineal*1;
+                    if(k==1)
+                        u2(1,k) = u2(1,k)+rata*Elineal_1*1;
+                    else
+                       u2(1,k) = u2(1,k)+rata*Elineal_2*1;
+                    end    
                 end
                 ETP = ETP + Ep;
            end
            disp('------------------------------------------------------------------'); 
-           %------------------grafico--------------------
+           %------------------grafico--------------------------------------
            x = 1:1:patrones;
            y = vector_graficar;   
            hold on
@@ -528,30 +605,30 @@ switch get(handles.popupmenu1,'Value')
            historial_rms(1,iteracion) = RMS;
            set(handles.ERROR_RMS,'String',RMS)
            set(handles.NUMERO_I,'String',iteracion)
-            %------------------grafico--------------------
+            %------------------grafico-------------------------------------
            if RMS <= errormaximo
                disp('terminado por error maximo mayor')
                disp('error RMS')
                disp(RMS);
                msgbox('Error RMS menor a error  maximo permitido', 'Atencion','warn');
                historial
-                %------------------grafico--------------------
+                %------------------grafico---------------------------------
                  x = 1:1:iteraciones;
                  y = historial_rms;   
                  hold on
                  plot(x,y,'g')
                  hold off
-                %------------------grafico--------------------
+                %------------------grafico---------------------------------
                 %------------------guardo pesos----------------------------       
-                 writematrix(w,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_1.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_1.txt
-                 writematrix(w2,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_salida.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_salida.txt
+                 writematrix(w,'C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_1.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_1.txt
+                 writematrix(w2,'C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_salida.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_salida.txt
                  
-                 writematrix(u,'C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_1.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_1.txt          
-                 writematrix(u2,'C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_salida.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_salida.txt
+                 writematrix(u,'C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_1.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_1.txt          
+                 writematrix(u2,'C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_salida.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_salida.txt
                  
                 
                 %------------------guardo pesos----------------------------
@@ -574,7 +651,8 @@ switch get(handles.popupmenu1,'Value')
                     disp(RMS);    
            end 
        end
-    case 2
+       
+       case 2
        %inicializo pesos y umbrales capa de entrada a capa1      
        w  =  -1 + (1--1).*rand(nc1,entradas);
        u  = -1 + (1--1).*rand(1,nc1);
@@ -585,9 +663,8 @@ switch get(handles.popupmenu1,'Value')
        u2  = 0 + (0--1).*rand(1,nc2);   
        salidas2 = zeros(1,nc2);
        
-       [filas columnas] = size(salidas2);
        %inicializo pesos y umbrales  de capa1 a salida   
-       w3 = -1 + (1--1).*rand(Salidas,columnas);
+       w3 = -1 + (1--1).*rand(Salidas,nc2);
        u3 =  0 + (0--1).*rand(1,Salidas);
        salidas3 = zeros(1,Salidas); 
        
@@ -640,38 +717,44 @@ switch get(handles.popupmenu1,'Value')
                disp(salidas2)
                
                %calcular salidas de la capa 2 a la capa de salida
-               sumatoria = 0;
-               for j = 1:nc2
-                   sumatoria = sumatoria + (salidas2(1,j)*w3(1,j));
-               end
-               sumatoria=sumatoria-u3(1,1);
-               
-               %verifico funcion de activacion para las salidas
-               switch get(handles.popupmenu5,'Value')   
+                for k = 1:Salidas
+                 sumatoria = 0;
+                 for j = 1:nc2
+                    sumatoria = sumatoria + (salidas2(1,j)*w3(1,j));
+                 end
+                 sumatoria=sumatoria-u3(1,k);
+                 %verifico funcion de activacion para las salidas
+                 switch get(handles.popupmenu5,'Value')   
                    case 1 
-                          salidas3(1,1) = sumatoria;
+                          salidas3(1,k) = sumatoria;
                    case 2
-                          salidas3(1,1) = 1/(1+exp(-sumatoria));
+                          salidas3(1,k) = 1/(1+exp(-sumatoria));
                    case 3
-                          salidas3(1,1) = tanh(sumatoria);   
+                          salidas3(1,k) = tanh(sumatoria);   
                    case 4
-                          salidas3(1,1) = sin(sumatoria);
-               end    
+                          salidas3(1,k) = sin(sumatoria);
+                 end  
+               end
                disp('salidas finales');
-               disp(salidas3);
+               disp(salidas3);   
                
                %calcular valor error lineal y error del patron
-               yr =  salidas3(1,1);
-               disp('yd')
+                yr1 =  salidas3(1,1);
+               disp('yd1')
                disp(S(i,1))
-               disp('yr')
-               disp(yr)
-               Elineal = S(i,1)-yr;
-               Ep = abs(Elineal) / 1;
+               disp('yr1')
+               disp(yr1)
+               Elineal_1 = S(i,1)-yr1;
+               yr2 =  salidas3(1,2);
+               disp('yd2')
+               disp(S(i,2))
+               disp('yr2')
+               disp(yr2)
+               Elineal_2 = S(i,2)-yr2;
+               Ep = abs(Elineal_1+Elineal_2) / 2;
                disp('error de patron')
                disp(Ep)
                vector_graficar(1,i) = Ep;
-               
                %actualizacion pesos de la capa de entrada  a  capa 1
                disp('w')
                disp(w)
@@ -699,7 +782,11 @@ switch get(handles.popupmenu1,'Value')
                disp(w3)
                for k = 1:Salidas
                 for l = 1:nc2
-                     w3(k,l) = w3(k,l)+rata*Elineal*salidas2(k,l);
+                    if(k==1)
+                     w3(k,l) = w3(k,l)+rata*Elineal_1*salidas2(1,l);
+                    else
+                     w3(k,l) = w3(k,l)+rata*Elineal_2*salidas2(1,l);
+                    end
                 end
                end
                disp('w3 modificado')
@@ -727,7 +814,11 @@ switch get(handles.popupmenu1,'Value')
                 disp('u3')
                 disp(u3)
                 for k = 1:Salidas
-                     u3(1,k) = u3(1,k)+rata*Elineal*1;
+                    if(k==1)
+                        u3(1,k) = u3(1,k)+rata*Elineal_1*1;
+                    else
+                        u3(1,k) = u3(1,k)+rata*Elineal_2*1;
+                    end    
                 end
                 disp('u3 modificado')
                 disp(u3)
@@ -760,19 +851,19 @@ switch get(handles.popupmenu1,'Value')
                    hold off
                  %------------------grafico--------------------
                  %------------------guardo pesos----------------------------
-                 writematrix(w,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_1.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_1.txt
-                 writematrix(w2,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_2.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_2.txt
-                 writematrix(w3,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_salida.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_salida.txt
+                 writematrix(w,'C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_1.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_1.txt
+                 writematrix(w2,'C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_2.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_2.txt
+                 writematrix(w3,'C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_salida.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_salida.txt
                  
-                 writematrix(u,'C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_1.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_1.txt
-                 writematrix(u2,'C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_2.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_2.txt            
-                 writematrix(u3,'C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_salida.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_salida.txt
+                 writematrix(u,'C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_1.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_1.txt
+                 writematrix(u2,'C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_2.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_2.txt            
+                 writematrix(u3,'C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_salida.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_salida.txt
                 %------------------guardo pesos----------------------------
                break;
            else
@@ -794,7 +885,7 @@ switch get(handles.popupmenu1,'Value')
            end
        end
        
-    case 3
+       case 3
        %inicializo pesos y umbrales capa de entrada a capa1      
        w  =  -1 + (1--1).*rand(nc1,entradas);
        u  = -1 + (1--1).*rand(1,nc1);
@@ -805,13 +896,13 @@ switch get(handles.popupmenu1,'Value')
        u2  = 0 + (0--1).*rand(1,nc2);   
        salidas2 = zeros(1,nc2);
        
-       %inicializo pesos y umbrales  de capa 1 a capa3   
+       %inicializo pesos y umbrales  de capa 2 a capa3   
        w3  =  -1 + (1--1).*rand(nc3,nc2);
        u3  = 0 + (0--1).*rand(1,nc3);   
        salidas3 = zeros(1,nc3);
-     
        
-       %inicializo pesos y umbrales  de capa1 a salida   
+       
+       %inicializo pesos y umbrales  de capa3 a salida   
        w4 = -1 + (1--1).*rand(Salidas,nc3);
        u4 =  0 + (0--1).*rand(1,Salidas);
        salidas4 = zeros(1,Salidas); 
@@ -864,7 +955,7 @@ switch get(handles.popupmenu1,'Value')
                disp('salidas de la capa 2')
                disp(salidas2)
                
-                %calcular las salidas de capa oculta 2 y 3 capa oculta
+               %calcular las salidas de capa oculta 2 y 3 capa oculta
                for j = 1:nc3
                     sumatoria = 0;
                     for k = 1:nc2
@@ -872,7 +963,7 @@ switch get(handles.popupmenu1,'Value')
                     end
                     sumatoria = sumatoria-u3(1,j);
                     %verifico cual funcion escogio el usuario
-                    switch get(handles.popupmenu4,'Value')   
+                    switch get(handles.popupmenu3,'Value')   
                         case 1
                             salidas3(1,j) = 1/(1+exp(-sumatoria));
                         case 2
@@ -884,40 +975,46 @@ switch get(handles.popupmenu1,'Value')
                disp('salidas de la capa 3')
                disp(salidas3)
                
-               %calcular salidas de la capa 3 a la capa de salida
-               sumatoria = 0;
-            
-               for j = 1:nc3
-                   sumatoria = sumatoria + (salidas3(1,j)*w4(1,j));
-               end
-               sumatoria=sumatoria-u4(1,1);
-               
-               %verifico funcion de activacion para las salidas
-               switch get(handles.popupmenu5,'Value')   
+               %calcular salidas de la capa 2 a la capa de salida
+                for k = 1:Salidas
+                 sumatoria = 0;
+                 for j = 1:nc3
+                    sumatoria = sumatoria + (salidas3(1,j)*w4(1,j));
+                 end
+                 sumatoria=sumatoria-u4(1,k);
+                 %verifico funcion de activacion para las salidas
+                 switch get(handles.popupmenu5,'Value')   
                    case 1 
-                          salidas4(1,1) = sumatoria;
+                          salidas4(1,k) = sumatoria;
                    case 2
-                          salidas4(1,1) = 1/(1+exp(-sumatoria));
+                          salidas4(1,k) = 1/(1+exp(-sumatoria));
                    case 3
-                          salidas4(1,1) = tanh(sumatoria);   
+                          salidas4(1,k) = tanh(sumatoria);   
                    case 4
-                          salidas4(1,1) = sin(sumatoria);
-               end    
+                          salidas4(1,k) = sin(sumatoria);
+                 end  
+               end
                disp('salidas finales');
-               disp(salidas4);
+               disp(salidas4);   
                
                %calcular valor error lineal y error del patron
-               yr =  salidas4(1,1);
-               disp('yd')
+               yr1 =  salidas4(1,1);
+               disp('yd1')
                disp(S(i,1))
-               disp('yr')
-               disp(yr)
-               Elineal = S(i,1)-yr;
-               Ep = abs(Elineal) / 1;
+               disp('yr1')
+               disp(yr1)
+               Elineal_1 = S(i,1)-yr1;
+               yr2 =  salidas4(1,2);
+               disp('yd2')
+               disp(S(i,2))
+               disp('yr2')
+               disp(yr2)
+               Elineal_2 = S(i,2)-yr2;
+               Ep = abs(Elineal_1+Elineal_2) / 2;
                disp('error de patron')
                disp(Ep)
                vector_graficar(1,i) = Ep;
-               
+              
                %actualizacion pesos de la capa de entrada  a  capa 1
                disp('w')
                disp(w)
@@ -940,8 +1037,7 @@ switch get(handles.popupmenu1,'Value')
                disp('w2 modificado')
                disp(w2)
                
-               %actualizacion pesos entre la capa 2 y la capa 3
-               
+               %actualizacion pesos de la capa 2 a capa 3
                disp('w3')
                disp(w3)  
                for k = 1:nc3
@@ -952,12 +1048,16 @@ switch get(handles.popupmenu1,'Value')
                disp('w3 modificado')
                disp(w3)
                
-               %actualizacion pesos entre la capa 3 y la capa salida
+               %actualizacion pesos entre la capa 3 y la capa de salida
                disp('w4')
                disp(w4)
                for k = 1:Salidas
                 for l = 1:nc3
-                     w4(k,l) = w4(k,l)+rata*Elineal*salidas3(k,l);
+                    if(k==1)
+                     w4(k,l) = w4(k,l)+rata*Elineal_1*salidas3(1,l);
+                    else
+                     w4(k,l) = w4(k,l)+rata*Elineal_2*salidas3(1,l);
+                    end
                 end
                end
                disp('w4 modificado')
@@ -990,11 +1090,15 @@ switch get(handles.popupmenu1,'Value')
                 disp('u3 modificado')
                 disp(u3)
                 
-                %actualizacionde umbrales de capa oculta 2 a capa de salida
+                %actualizacionde umbrales de capa oculta 3 a capa de salida
                 disp('u4')
                 disp(u4)
                 for k = 1:Salidas
-                     u4(1,k) = u4(1,k)+rata*Elineal*1;
+                    if(k==1)
+                        u4(1,k) = u4(1,k)+rata*Elineal_1*1;
+                    else
+                        u4(1,k) = u4(1,k)+rata*Elineal_2*1;
+                    end    
                 end
                 disp('u4 modificado')
                 disp(u4)
@@ -1026,26 +1130,24 @@ switch get(handles.popupmenu1,'Value')
                    plot(x,y,'g')
                    hold off
                  %------------------grafico--------------------
-                  %------------------guardo pesos----------------------------
-                
-                 writematrix(w,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_1.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_1.txt
-                 writematrix(w2,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_2.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_2.txt
-                 writematrix(w3,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_3.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_3.txt
-                 writematrix(w4,'C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_salida.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\pesos_capa_salida.txt
+                 %------------------guardo pesos----------------------------
+                 writematrix(w,'C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_1.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_1.txt
+                 writematrix(w2,'C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_2.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_2.txt
+                 writematrix(w3,'C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_3.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_3.txt
+                 writematrix(w4,'C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_salida.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\pesos_capa_salida.txt
                  
-                 
-                 writematrix(u,'C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_1.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_1.txt
-                 writematrix(u2,'C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_2.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_2.txt
-                 writematrix(u3,'C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_3.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_3.txt 
-                 writematrix(u4,'C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_salida.txt','Delimiter',';');
-                 type C:\Users\fabia\Desktop\IA\elemento_punto_1\umbrales_capa_salida.txt
+                 writematrix(u,'C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_1.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_1.txt
+                 writematrix(u2,'C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_2.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_2.txt   
+                 writematrix(u3,'C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_3.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_3.txt   
+                 writematrix(u4,'C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_salida.txt','Delimiter',';');
+                 type C:\Users\fabia\Desktop\IA\elemento_punto_5\umbrales_capa_salida.txt
                 %------------------guardo pesos----------------------------
                break;
            else
@@ -1066,74 +1168,4 @@ switch get(handles.popupmenu1,'Value')
                    disp(RMS);  
            end
        end
-  end
- 
-
-
-
-function rata_Callback(hObject, eventdata, handles)
-% hObject    handle to rata (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of rata as text
-%        str2double(get(hObject,'String')) returns contents of rata as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function rata_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to rata (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function NUMERO_I_Callback(hObject, eventdata, handles)
-% hObject    handle to NUMERO_I (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of NUMERO_I as text
-%        str2double(get(hObject,'String')) returns contents of NUMERO_I as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function NUMERO_I_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to NUMERO_I (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function ERROR_RMS_Callback(hObject, eventdata, handles)
-% hObject    handle to ERROR_RMS (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of ERROR_RMS as text
-%        str2double(get(hObject,'String')) returns contents of ERROR_RMS as a double
-
-
-% --- Executes during object creation, after setting all properties.
-function ERROR_RMS_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to ERROR_RMS (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
 end

@@ -611,6 +611,10 @@ switch get(handles.popupmenu1,'Value')
                
                %calcular valor error lineal y error del patron
                yr =  salidas3(1,1);
+               disp('yd')
+               disp(S(i,1))
+               disp('yr')
+               disp(yr)
                Elineal = S(i,1)-yr;
                Ep = abs(Elineal) / 1;
                disp('error de patron')
@@ -826,6 +830,10 @@ switch get(handles.popupmenu1,'Value')
                
                %calcular valor error lineal y error del patron
                yr =  salidas3(1,1);
+               disp('yd')
+               disp(S(i,1))
+               disp('yr')
+               disp(yr)
                Elineal = S(i,1)-yr;
                Ep = abs(Elineal) / 1;
                disp('error de patron')
